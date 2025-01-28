@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'container_custom.dart';
+import 'package:flutter/material.dart';
 
 class TextCustomWidget extends StatelessWidget {
   final String text;
@@ -82,7 +81,7 @@ class TextCustomWidget extends StatelessWidget {
       //         wordSpacing: wordSpacing,
       //       ),
       // ),
-      child: Text( 
+      child: Text(
         text,
         textAlign: textAlign,
         textWidthBasis: TextWidthBasis.parent,

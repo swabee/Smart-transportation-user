@@ -29,7 +29,7 @@ class NotificationCard extends StatelessWidget {
                     children: [
                       TextCustomWidget(
                         text: "Notification1",
-                        width: 158.w, 
+                        width: 138.w, 
                         height: 19.h,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
@@ -51,7 +51,7 @@ class NotificationCard extends StatelessWidget {
                   TextCustomWidget(
                     text:
                         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..",
-                    width: 320.w,
+                    width: 300.w,
                     height: 45.h,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,

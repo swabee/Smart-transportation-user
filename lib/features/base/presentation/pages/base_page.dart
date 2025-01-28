@@ -1,14 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:user_app/constant/app_constant.dart';
-import 'package:user_app/custom/text_custom.dart';
+import 'package:user_app/features/booking/presnetatioin/pages/all_booking/all_booking_page.dart';
+import 'package:user_app/features/customer_setting/presentation/pages/customer_setting_page.dart';
 import 'package:user_app/features/home/presentation/Home.dart';
-import 'package:user_app/features/map-page/presentation/pages/map_page.dart';
-import 'package:user_app/features/notifications/presnetation/pages/notification_page.dart';
-import 'package:user_app/features/profile/presentation/pages/profile.dart';
-import 'package:user_app/features/setting/presnetation/pages/settings.dart';
 import 'package:user_app/features/wallet/presentation/pages/walle.dart';
 
 class BasePage extends StatefulWidget {
@@ -60,62 +56,69 @@ class _BasePageState extends State<BasePage> {
   int _page = 0;
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
-  Widget _getPage(int page) {
-    switch (page) {
-      case 0:
-        return const Home();
-      case 1:
-        return const MapPage();
-      case 2:
-        return const SettingPage();
-      case 3:
-        return const Profile();
+  final List<Widget> currentPage = [
+    const Home(),
+    const AllBookingPage(),
+    const WalletScreen(),
+    const CustomerSettingPage()
+  ];
 
-      default:
-        return const Home();
-    }
-  }
+  // Widget _getPage(int page) {
+  //   switch (page) {
+  //     case 0:
+  //       return const Home();
+  //     case 1:
+  //       return const MapPage();
+  //     case 2:
+  //       return const SettingPage();
+  //     case 3:
+  //       return const CustomerProfilePage();
+
+  //     default:
+  //       return const Home();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        title: TextCustomWidget(
-          text: 'Hi Swabeeh!',
-          fontSize: 19.sp,
-          fontWeight: FontWeight.w500,
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WalletScreen(),
-                    ));
-              },
-              icon: const Icon(
-                Icons.wallet,
-                color: Colors.red,
-              )),
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const NotificationPage(),
-                    ));
-              },
-              icon: const Icon(
-                Icons.notifications,
-                color: Colors.red,
-              )),
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   surfaceTintColor: Colors.white,
+      //   title: TextCustomWidget(
+      //     text: 'Hi Swabeeh!',
+      //     fontSize: 19.sp,
+      //     fontWeight: FontWeight.w500,
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //         onPressed: () {
+      //           Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                 builder: (context) => const WalletScreen(),
+      //               ));
+      //         },
+      //         icon: const Icon(
+      //           Icons.wallet,
+      //           color: Colors.red,
+      //         )),
+      //     IconButton(
+      //         onPressed: () {
+      //           Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                 builder: (context) => const NotificationPage(),
+      //               ));
+      //         },
+      //         icon: const Icon(
+      //           Icons.notifications,
+      //           color: Colors.red,
+      //         )),
+      //   ],
+      // ),
       backgroundColor: Colors.white,
-      body: _getPage(_page),
+      body: currentPage[_page],
       // ignore: deprecated_member_use
       bottomNavigationBar: CurvedNavigationBar(
         color: primaryColor.withOpacity(.3),
@@ -127,22 +130,22 @@ class _BasePageState extends State<BasePage> {
           Icon(
             CupertinoIcons.home,
             size: 25,
-            color: (_page == 0) ? Colors.white : Colors.red,
+            color: (_page == 0) ? Colors.lightGreen : Colors.green,
           ),
           Icon(
             CupertinoIcons.map,
             size: 25,
-            color: (_page == 1) ? Colors.white : Colors.red,
+            color: (_page == 1) ? Colors.lightGreen : Colors.green,
+          ),
+          Icon(
+            Icons.wallet,
+            size: 25,
+            color: (_page == 2) ? Colors.lightGreen : Colors.green,
           ),
           Icon(
             CupertinoIcons.settings,
             size: 25,
-            color: (_page == 2) ? Colors.white : Colors.red,
-          ),
-          Icon(
-            CupertinoIcons.person,
-            size: 25,
-            color: (_page == 3) ? Colors.white : Colors.red,
+            color: (_page == 3) ? Colors.lightGreen : Colors.green,
           ),
         ],
         // ignore: deprecated_member_use

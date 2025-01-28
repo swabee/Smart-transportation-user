@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:user_app/constant/app_constant.dart';
+
 
 
 class ButtonCustom extends StatelessWidget {
   const ButtonCustom({
+    super.key,
     required this.text,
     required this.callback,
-    super.key,
     this.btnHeight,
     this.btnWidth,
     this.btnColor,
@@ -23,6 +23,11 @@ class ButtonCustom extends StatelessWidget {
     this.isPositive,
     this.child,
     this.textColor,
+    this.elevation,
+    this.gradient,
+    this.mainAxisAlignment,
+    this.disabledColor,
+    this.ischildPositionRight = false,
   });
 
   final double? btnHeight;
@@ -42,17 +47,23 @@ class ButtonCustom extends StatelessWidget {
   final bool? isPositive;
   final Widget? child;
   final Color? textColor;
+  final double? elevation;
+  final Gradient? gradient;
+  final MainAxisAlignment? mainAxisAlignment;
+  final Color? disabledColor;
+  final bool? ischildPositionRight;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: ShapeDecoration(
+        gradient: gradient,
         shape: RoundedRectangleBorder(
-          borderRadius: borderRadius ?? BorderRadius.circular(25.h),
+          borderRadius: borderRadius ?? BorderRadius.circular(14.h),
         ),
         color: (callback == null || isDisabled == true)
-            ? Colors.grey
-            : primaryColor,
+            ? disabledColor ?? Colors.grey
+            : null,
         // gradient: LinearGradient(
         //   begin: Alignment.topLeft,
         //   end: Alignment.bottomRight,
@@ -62,35 +73,39 @@ class ButtonCustom extends StatelessWidget {
         // ),
       ),
       margin: margin ??
-          EdgeInsets.symmetric(horizontal: dontApplyMargin == true ? 0 : 24),
-      height: btnHeight ?? 56.h,
-      width: btnWidth ?? btnWidth,
-      alignment: Alignment.center,
+          EdgeInsets.symmetric(horizontal: dontApplyMargin == true ? 0 : 35),
+      height: btnHeight ?? 52.h,
+      width: btnWidth,
+      // alignment: Alignment.center,
       child: TextButton(
         style: TextButton.styleFrom(
+          elevation: elevation,
           backgroundColor: btnColor,
           foregroundColor: splashColor ?? Colors.white24,
           padding: padding ?? const EdgeInsets.all(0),
           shape: RoundedRectangleBorder(
-            borderRadius: borderRadius ?? BorderRadius.circular(25.h),
+            borderRadius: borderRadius ?? BorderRadius.circular(14.h),
             side: borderSide,
           ),
+          disabledBackgroundColor: disabledColor ?? Colors.grey,
         ),
         onPressed: (callback == null || isDisabled == true)
             ? null
             : () {
-                if (inProgress == true) {
-                  return;
-                }
                 callback!();
               },
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
             children: [
-              if (child != null) child!,
-              SizedBox(width: 8.w),
+              if (child != null && ischildPositionRight == false)
+                Row(
+                  children: [
+                    child!,
+                    SizedBox(width: 14.w),
+                  ],
+                ),
               Container(
                 alignment: Alignment.center,
                 child: (inProgress == true)
@@ -106,12 +121,19 @@ class ButtonCustom extends StatelessWidget {
                         text,
                         style: textStyle ??
                             TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w600,
-                              color: textColor ?? Colors.black,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: textColor ?? Colors.white,
                             ),
                       ),
               ),
+              if (ischildPositionRight == true)
+                Row(
+                  children: [
+                    SizedBox(width: 14.w),
+                    child!,
+                  ],
+                )
             ],
           ),
         ),

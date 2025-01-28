@@ -1,10 +1,50 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:user_app/constant/app_constant.dart';
+
 
 
 class TextFieldCustom extends StatelessWidget {
+  final String? hintText;
+  final String? labelText;
+  final IconData? icon;
+  final ValueChanged<String>? onChanged;
+  final double? width;
+  final double? height;
+  final double marginLeft;
+  final double marginTop;
+  final double marginRight;
+  final double marginBottom;
+  final BorderRadius? borderRadius;
+  final Alignment? alignment;
+  final TextInputType? keyboardType;
+  final TextAlign? textAlign;
+  final Color? fillColor;
+  final Color? borderColor;
+  final BorderSide? border;
+  final bool? useUnderlineBorder;
+  final TextStyle? hintstyle;
+  final TextStyle? labelstyle;
+  final Widget? prefix;
+  final Widget? prefixIcon;
+  final bool? isOtpField;
+  final Widget? suffix;
+  final Widget? suffixIcon;
+  final VoidCallback? onSubmit;
+  final bool? obscureText;
+  final TextEditingController? controller;
+  final TextAlignVertical? textAlignVertical;
+  final double? borderWidth;
+  final double? cphorizontal;
+  final List<BoxShadow>? boxShadow;
+  final int? maxLines;
+  final bool? expands;
+  final EdgeInsetsGeometry? containerPadding;
+  final TextInputAction? textInputAction;
+  final double? cpvertical;
+  final TextStyle? style;
+  final BoxConstraints? prefixIconConstraints;
 
   const TextFieldCustom({
     super.key,
@@ -40,39 +80,14 @@ class TextFieldCustom extends StatelessWidget {
     this.borderWidth,
     this.cphorizontal,
     this.boxShadow,
+    this.maxLines,
+    this.expands,
+    this.containerPadding,
+    this.textInputAction,
+    this.cpvertical,
+    this.style,
+    this.prefixIconConstraints,
   });
-  final String? hintText;
-  final String? labelText;
-  final IconData? icon;
-  final ValueChanged<String>? onChanged;
-  final double? width;
-  final double? height;
-  final double marginLeft;
-  final double marginTop;
-  final double marginRight;
-  final double marginBottom;
-  final BorderRadius? borderRadius;
-  final Alignment? alignment;
-  final TextInputType? keyboardType;
-  final TextAlign? textAlign;
-  final Color? fillColor;
-  final Color? borderColor;
-  final BorderSide? border;
-  final bool? useUnderlineBorder;
-  final TextStyle? hintstyle;
-  final TextStyle? labelstyle;
-  final Widget? prefix;
-  final Widget? prefixIcon;
-  final bool? isOtpField;
-  final Widget? suffix;
-  final Widget? suffixIcon;
-  final VoidCallback? onSubmit;
-  final bool? obscureText;
-  final TextEditingController? controller;
-  final TextAlignVertical? textAlignVertical;
-  final double? borderWidth;
-  final double? cphorizontal;
-  final List<BoxShadow>? boxShadow;
 
   @override
   Widget build(BuildContext context) {
@@ -83,18 +98,23 @@ class TextFieldCustom extends StatelessWidget {
         );
       } else {
         return OutlineInputBorder(
-          borderRadius: borderRadius ?? BorderRadius.circular(25.h),
+          borderRadius: borderRadius ?? BorderRadius.circular(14.r),
           borderSide: border ??
               BorderSide(
-                  color: borderColor ?? Colors.grey, width: borderWidth ?? 1.w,),
+                  color: borderColor ?? Colors.grey, width: borderWidth ?? 1.w),
         );
       }
     }
 
     return Container(
-      decoration: BoxDecoration(boxShadow: boxShadow),
-      width: width ?? 379.w,
-      height: height ?? 52.h,
+      decoration: BoxDecoration(
+        boxShadow: boxShadow,
+        borderRadius: borderRadius ?? BorderRadius.circular(14.r),
+        color: fillColor,
+      ),
+      padding: containerPadding,
+      width: width,
+      height: height ?? 48.h,
       margin: EdgeInsets.only(
         top: marginTop,
         left: marginLeft,
@@ -107,20 +127,24 @@ class TextFieldCustom extends StatelessWidget {
           minWidth: width ?? 310.w,
           minHeight: height ?? 41.h,
         ),
-        child: TextField(controller: controller,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
+        child: TextField(
+          textInputAction: textInputAction ?? TextInputAction.next,
+          controller: controller,
+          style: style ??
+              TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
           obscureText: obscureText ?? false,
           onSubmitted: (_) {
             if (onSubmit != null) {
               onSubmit!();
             }
           },
-          expands: true,
-          maxLines: null,
+          expands: obscureText == true ? false : expands ?? true,
+          maxLines: obscureText == true ? 1 : maxLines,
+          minLines: null,
           inputFormatters: isOtpField != null && isOtpField == true
               ? [
                   LengthLimitingTextInputFormatter(1),
@@ -135,16 +159,22 @@ class TextFieldCustom extends StatelessWidget {
                 TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
-                  color: const Color(0xff878787),
+                  color: primaryColor,
                 ),
             labelText: labelText,
-            labelStyle: labelstyle ?? const TextStyle(),
+            labelStyle: labelstyle ??
+                TextStyle(
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w300,
+                  color: const Color(0xff999999),
+                ),
             prefixIcon: prefixIcon,
+            prefixIconConstraints: prefixIconConstraints,
             prefix: prefix,
             suffix: suffix,
             suffixIcon: suffixIcon,
             contentPadding: EdgeInsets.symmetric(
-                vertical: 8.h, horizontal: cphorizontal ?? 16.w,),
+                vertical: cpvertical ?? 2.h, horizontal: cphorizontal ?? 16.w),
             enabledBorder: getBorder(),
             //     OutlineInputBorder(
             //   borderSide: border ??
@@ -166,7 +196,7 @@ class TextFieldCustom extends StatelessWidget {
             //     color: Colors.black, // replace with your focused border color
             //   ),
             // ),
-            fillColor: fillColor,
+            fillColor: Colors.transparent,
             filled: fillColor != null ? true : false,
           ),
           keyboardType: keyboardType,

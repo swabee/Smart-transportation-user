@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: deprecated_member_use
 
-import '../auth/presentation/login/login.dart';
+import 'package:flutter/material.dart';
+import 'package:user_app/features/auth/presentation/login/presentation/pages/login_page.dart';
+
+
 
 class Welcome extends StatelessWidget {
   const Welcome({super.key});
@@ -33,6 +36,7 @@ class Welcome extends StatelessWidget {
                       Colors.black.withOpacity(1),
                       Colors.black.withOpacity(0.9),
                       Colors.black.withOpacity(0.8),
+                   
                       Colors.black.withOpacity(0.7),
                       Colors.black.withOpacity(0.6),
                       Colors.black.withOpacity(0.5),
@@ -78,7 +82,7 @@ class Welcome extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (_) => const LoginScreen()));
+                        MaterialPageRoute(builder: (_) => const LoginPage()));
                   },
                   child: Container(
                     decoration: BoxDecoration(

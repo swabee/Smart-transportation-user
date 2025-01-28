@@ -1,33 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:user_app/constant/app_constant.dart';
+import 'package:user_app/features/booking/presnetatioin/pages/bus_seat_selection_page.dart';
+import 'package:user_app/features/home/presentation/search-for-booking-cubit/model/trip_model.dart';
 
 class BookingCard extends StatelessWidget {
-  final String departureTime;
-  final String duration;
-  final String arrivalTime;
-  final String busType;
-  final String depot;
-  final String busNumber;
-  final String seatsAvailable;
-  final String price;
-  final bool isSoldOut;
+  final TripModel tripModel;
 
   const BookingCard({
-    required this.departureTime,
-    required this.duration,
-    required this.arrivalTime,
-    required this.busType,
-    required this.depot,
-    required this.busNumber,
-    required this.seatsAvailable,
-    required this.price,
-    this.isSoldOut = false,
+    required this.tripModel,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(color: whiteCOlor,
+    return Card(
+      color: whiteCOlor,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
@@ -38,7 +25,7 @@ class BookingCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              depot,
+              tripModel.stops[tripModel.stops.length - 1],
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -47,7 +34,7 @@ class BookingCard extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              busType,
+              tripModel.busType,
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.green,
@@ -57,7 +44,7 @@ class BookingCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  departureTime,
+                  tripModel.arrivalTime,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -71,7 +58,7 @@ class BookingCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  duration,
+                  tripModel.departureTime,
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
@@ -85,7 +72,7 @@ class BookingCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  arrivalTime,
+                  tripModel.departureTime,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -103,9 +90,9 @@ class BookingCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  "$seatsAvailable Seats",
+                  "${tripModel.bookedSeats.length} Seats",
                   style: TextStyle(
-                    color: isSoldOut ? Colors.red : Colors.black87,
+                    color: tripModel.isSoldOut ? Colors.red : Colors.black87,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -116,13 +103,13 @@ class BookingCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  busNumber,
+                  tripModel.busNumber,
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.red,
                   ),
                 ),
-                isSoldOut
+                tripModel.isSoldOut
                     ? const Text(
                         "SOLD OUT",
                         style: TextStyle(
@@ -132,7 +119,7 @@ class BookingCard extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        "₹$price",
+                        "₹ ${tripModel.price}",
                         style: const TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
@@ -151,7 +138,16 @@ class BookingCard extends StatelessWidget {
                   label: const Text("View More"),
                 ),
                 ElevatedButton(
-                  onPressed: isSoldOut ? null : () {},
+                  onPressed: tripModel.isSoldOut
+                      ? null
+                      : () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    BusSeatSelectionPage(tripModel: tripModel),
+                              ));
+                        },
                   child: const Text("Select Seat"),
                 ),
               ],

@@ -27,7 +27,7 @@ class NotificationPage extends StatelessWidget {
           padding: EdgeInsets.only(left: 18.w, top: 40.h),
           child: Column(
             children: [
-              Row(
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextCustomWidget(
                     text: "TODAY",
@@ -37,7 +37,7 @@ class NotificationPage extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     textColor: const Color(0xffB7B7B7),
                   ),
-                  SizedBox(width: 173.w),
+                 
                   TextCustomWidget(
                     text: "Mark all as read",
                     width: 106.w,

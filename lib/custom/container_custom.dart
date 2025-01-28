@@ -21,42 +21,43 @@ class ContainerCustom extends StatelessWidget {
   final DecorationImage? decorationImage;
   final Gradient? gradient;
   final List<BoxShadow>? shadow;
+  final BoxShape? shape;
   final VoidCallback? callback;
-  const ContainerCustom(
-      {super.key,
-      this.height,
-      this.width,
-      this.marginLeft = 0,
-      this.marginRight = 0,
-      this.marginBottom = 0,
-      this.marginTop = 0,
-      this.paddingLeft = 0,
-      this.paddingRight = 0,
-      this.paddingBottom = 0,
-      this.paddingTop = 0,
-      this.alignment = Alignment.center,
-      this.border,
-      this.borderRadius,
-      this.bgColor,
-      this.decorationImage,
-      this.child,
-      this.margin,
-      this.padding,
-      this.gradient,
-      this.shadow,
-      this.callback});
+
+  const ContainerCustom({
+    super.key,
+    this.height,
+    this.width,
+    this.marginLeft = 0,
+    this.marginRight = 0,
+    this.marginBottom = 0,
+    this.marginTop = 0,
+    this.paddingLeft = 0,
+    this.paddingRight = 0,
+    this.paddingBottom = 0,
+    this.paddingTop = 0,
+    this.alignment = Alignment.center,
+    this.border,
+    this.borderRadius,
+    this.bgColor,
+    this.decorationImage,
+    this.child,
+    this.margin,
+    this.padding,
+    this.gradient,
+    this.shadow,
+    this.shape,
+    this.callback,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (callback == null)
-          ? null
-          : () {
-              callback!();
-            },
+      onTap: callback,
       child: Container(
         decoration: BoxDecoration(
           border: border,
+          shape: shape ?? BoxShape.rectangle,
           borderRadius: borderRadius,
           gradient: gradient,
           image: decorationImage,
