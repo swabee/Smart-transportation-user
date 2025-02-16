@@ -7,10 +7,12 @@ import 'package:user_app/custom/button_custom.dart';
 import 'package:user_app/features/booking/presnetatioin/pages/confirm_booking_page.dart';
 import 'package:user_app/features/booking/presnetatioin/widgets/bus_seat_custome_tile.dart';
 import 'package:user_app/features/home/presentation/search-for-booking-cubit/model/trip_model.dart';
+import 'package:user_app/models/bus_model.dart';
 
 class BusSeatSelectionPage extends StatelessWidget {
-  const BusSeatSelectionPage({super.key, required this.tripModel});
+  const BusSeatSelectionPage({super.key, required this.tripModel, required this.busModel});
   final TripModel tripModel;
+  final BusModel busModel;
 
   @override
   Widget build(BuildContext context) {
@@ -477,7 +479,7 @@ class BusSeatSelectionPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ConfirmBookingPage(tripModel: tripModel),
+                            ConfirmBookingPage(tripModel: tripModel,busModel: busModel,),
                       ));
                 },
               )

@@ -63,7 +63,7 @@ class _AllBookingPageState extends State<AllBookingPage> {
                           itemCount: activeBookings.length,
                           itemBuilder: (context, index) {
                             final bookingModel = activeBookings[index];
-                            return RecentTripsTile(bookingModel: bookingModel);
+                            return RecentTripsTile(bookingModel: bookingModel,isActive: true,);
                           },
                         ),
                       ),
@@ -80,7 +80,7 @@ class _AllBookingPageState extends State<AllBookingPage> {
                           itemCount: completedBookings.length,
                           itemBuilder: (context, index) {
                             final bookingModel = completedBookings[index];
-                            return RecentTripsTile(bookingModel: bookingModel);
+                            return RecentTripsTile(bookingModel: bookingModel,isActive: false,);
                           },
                         ),
                       ),
@@ -97,7 +97,7 @@ class _AllBookingPageState extends State<AllBookingPage> {
                           itemCount: cancelledBookings.length,
                           itemBuilder: (context, index) {
                             final bookingModel = cancelledBookings[index];
-                            return RecentTripsTile(bookingModel: bookingModel);
+                            return RecentTripsTile(bookingModel: bookingModel,isActive: false,);
                           },
                         ),
                       ),

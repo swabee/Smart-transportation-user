@@ -5,9 +5,9 @@ import 'package:user_app/features/home/presentation/search-for-booking-cubit/mod
 
 // State class
 class SearchForBookingState extends Equatable {
-  final String? selectedDestination;
-  final String? selectedPickup;
-  final DateTime? selectedDate;
+  final int? selectedDestination;
+  final int? selectedPickup;
+  final Timestamp? selectedDate;
   final List<TripModel> availableTripsList;
   List<int>? selectedSeates; // Removed final here
 
@@ -19,9 +19,9 @@ class SearchForBookingState extends Equatable {
       this.selectedSeates});
 
   SearchForBookingState copyWith({
-    String? selectedDestination,
-    String? selectedPickup,
-    DateTime? selectedDate,
+   int? selectedDestination,
+  int? selectedPickup,
+ Timestamp? selectedDate,
     List<TripModel>? availableTripsList,
     final List<int>? selectedSeates,
   }) {
@@ -47,38 +47,37 @@ class SearchForBookingState extends Equatable {
 class SearchForBookingCubit extends Cubit<SearchForBookingState> {
   SearchForBookingCubit() : super(SearchForBookingState());
 
-  void updatePickup(String pickup) {
+  void updatePickup(int pickup) {
     emit(state.copyWith(selectedPickup: pickup));
   }
 
-  void updateDestination(String destination) {
+  void updateDestination(int destination) {
     emit(state.copyWith(selectedDestination: destination));
   }
 
-void updateSelectedSeats(int seatNumber) {
-  // Ensure selectedSeates is initialized if it is null
-  state.selectedSeates ??= [];
+  void updateSelectedSeats(int seatNumber) {
+    // Ensure selectedSeates is initialized if it is null
+    state.selectedSeates ??= [];
 
-  // Check if the seat is already selected
-  if (state.selectedSeates!.contains(seatNumber)) {
-    // If it exists, remove it from the list
-    state.selectedSeates!.remove(seatNumber);
-  } else {
-    // Otherwise, add the seat number to the list
-    state.selectedSeates!.add(seatNumber);
+    // Check if the seat is already selected
+    if (state.selectedSeates!.contains(seatNumber)) {
+      // If it exists, remove it from the list
+      state.selectedSeates!.remove(seatNumber);
+    } else {
+      // Otherwise, add the seat number to the list
+      state.selectedSeates!.add(seatNumber);
+    }
+
+    // Emit the new state with updated selected seats
+    emit(state.copyWith(selectedSeates: List.from(state.selectedSeates!)));
   }
 
-  // Emit the new state with updated selected seats
-  emit(state.copyWith(selectedSeates: List.from(state.selectedSeates!)));
-}
-
-
-  void updateBookingDate(DateTime date) {
+  void updateBookingDate(Timestamp date) {
     emit(state.copyWith(selectedDate: date));
   }
 
   Stream<List<TripModel>> streamAvailableBookingTrips() async* {
-    if (state.selectedDestination != null && state.selectedPickup != null) {
+    if (state.selectedPickup != null) {
       yield* FirebaseFirestore.instance
           .collection('trips')
           .snapshots()
@@ -91,9 +90,12 @@ void updateSelectedSeats(int seatNumber) {
         final destination = state.selectedDestination;
 
         List<TripModel> availableTrips = trips.where((trip) {
-          int pickUpIndex = trip.stops.indexOf(pickUp!);
-          int destinationIndex = trip.stops.indexOf(destination!);
+          int pickUpIndex =
+              trip.stopsModel.indexWhere((element) => element.depoId == pickUp);
 
+          int destinationIndex = trip.stopsModel
+              .indexWhere((element) => element.depoId == destination);
+          print( 'pickUp id : $pickUp');
           return pickUpIndex != -1 &&
               destinationIndex != -1 &&
               destinationIndex > pickUpIndex;
@@ -108,19 +110,24 @@ void updateSelectedSeats(int seatNumber) {
     }
   }
 
- int findDifferenceBetweenNodes(TripModel tripModel) {
+  int findDifferenceBetweenNodes(TripModel tripModel) {
     final pickUp = state.selectedPickup;
     final destination = state.selectedDestination;
 
-    if (pickUp == null || destination == null) {
+    if (pickUp == null) {
       // Return null if either pickup or destination is not selected
       return 0;
     }
 
-    final pickUpIndex = tripModel.stops.indexOf(pickUp);
-    final destinationIndex = tripModel.stops.indexOf(destination);
+    int pickUpIndex =
+        tripModel.stopsModel.indexWhere((element) => element.depoId == pickUp);
 
-    if (pickUpIndex != -1 && destinationIndex != -1 && destinationIndex > pickUpIndex) {
+    int destinationIndex = tripModel.stopsModel
+        .indexWhere((element) => element.depoId == destination);
+
+    if (pickUpIndex != -1 &&
+        destinationIndex != -1 &&
+        destinationIndex > pickUpIndex) {
       return destinationIndex - pickUpIndex;
     } else {
       // Return null if either pickup or destination is not found or if the destination comes before pickup

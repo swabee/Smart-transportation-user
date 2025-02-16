@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:user_app/features/base/presentation/pages/base_page.dart';
 import 'package:user_app/features/booking/data/models/booking_model.dart';
+import 'package:user_app/features/customer_setting/customer_profile/domain/entities/user_data_entity.dart';
 import 'package:user_app/features/home/presentation/search-for-booking-cubit/model/trip_model.dart';
 
 class AllBookingState extends Equatable {
@@ -56,7 +57,7 @@ class AllBookingCubit extends Cubit<AllBookingState> {
     _bookingSubscription = _firestore
         .collection('bookings')
         .where('userId', isEqualTo: userId)
-        .orderBy('createdAt')
+        // .orderBy('createdAt')
         .snapshots()
         .listen((snapshot) {
       final bookings = snapshot.docs.map((doc) {
@@ -74,7 +75,11 @@ class AllBookingCubit extends Cubit<AllBookingState> {
 
   /// Book now and return the result.
   Future<Either<String, BookingModel>> bookNow(
-      BookingModel booking, TripModel tripModel, BuildContext context) async {
+      BookingModel booking,
+      TripModel tripModel,
+      BuildContext context,
+      UserDataEntity userData,
+      double ticketCharge) async {
     try {
       final newId = _firestore.collection('bookings').doc().id;
 
@@ -86,8 +91,12 @@ class AllBookingCubit extends Cubit<AllBookingState> {
           .set(updatedBooking.toJson());
       await _firestore
           .collection('trips')
-          .doc(tripModel.id)
-          .update({'bookedSeats': tripModel.bookedSeats});
+          .doc(tripModel.tripId)
+          .update({'booked_seates': tripModel.bookedSeats});
+      await _firestore
+          .collection('users')
+          .doc(userData.id)
+          .update({'wallet_balance': (userData.walletBalance - ticketCharge)});
 
       Navigator.pushAndRemoveUntil(
         context,
@@ -110,7 +119,6 @@ class AllBookingCubit extends Cubit<AllBookingState> {
     return super.close();
   }
 }
-
 
 // // ignore_for_file: use_build_context_synchronously
 

@@ -17,8 +17,6 @@ import 'package:user_app/global/root/root_page.dart';
 import 'package:user_app/service_locator/service_locator.dart';
 import 'package:user_app/utils/snackbar_service.dart';
 
-
-
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
 
@@ -61,6 +59,8 @@ class _SignupPageState extends State<SignupPage> {
                       'Account created successfully',
                       context,
                     );
+
+                    // getTokenAndSave();
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
@@ -91,7 +91,6 @@ class _SignupPageState extends State<SignupPage> {
                         containerAlignment: Alignment.center,
                         textColor: primaryColor,
                       ),
-                            
                       const FirstNameField(),
                       const LastNameField(),
                       const EmailField(),
@@ -224,7 +223,6 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ],
                       ),
-                     
                     ],
                   ),
                 ),

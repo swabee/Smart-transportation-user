@@ -36,8 +36,12 @@ class BookingAvailableTripsPage extends StatelessWidget {
           final trips = snapshot.data ?? [];
 
           if (trips.isEmpty) {
-            return const Center(
-              child: Text("No trips available."),
+            return  Center(
+              child: BlocBuilder<SearchForBookingCubit, SearchForBookingState>(
+                builder: (context, state) {
+                  return  Text("No trips available. ${state.selectedPickup}");
+                },
+              ),
             );
           }
 

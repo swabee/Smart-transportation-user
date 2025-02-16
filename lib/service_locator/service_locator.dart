@@ -30,18 +30,16 @@ import 'package:user_app/features/customer_setting/customer_profile/domain/useca
 import 'package:user_app/features/customer_setting/customer_profile/domain/usecases/customer/upload_customer_profile_picture_usecase.dart';
 import 'package:user_app/local_storage/local_storage.dart';
 import 'package:user_app/network/network_info.dart';
+import 'package:user_app/push_notifications/firebase_messaging_service.dart';
+import 'package:user_app/utils/auth_service.dart';
 import 'package:user_app/utils/snackbar_service.dart';
-
 
 GetIt locator = GetIt.instance;
 Future<void> setupLocatorAndInitDependencies() async {
- 
-
-  
-
   final prefs = await SharedPreferences.getInstance();
 
- 
+  //! Firebase Messaging Service
+  registerLazySingleton(FirebaseMessagingService());
 
   //! Firebase Auth
   registerLazySingleton<FirebaseAuth>(FirebaseAuth.instance);
@@ -89,6 +87,11 @@ Future<void> setupLocatorAndInitDependencies() async {
 
   //! snack bar service
   registerLazySingleton<SnackBarService>(SnackBarService());
+
+  //! Auth service
+  locator.registerLazySingleton(() => AuthService());
+  //   //! Firebase messaging
+  // registerLazySingleton<FirebaseMessaging>(FirebaseMessaging.instance);
 
   //! Auth Data source
   registerLazySingleton<AuthRemoteDataSource>(
@@ -176,9 +179,6 @@ Future<void> setupLocatorAndInitDependencies() async {
     ),
   );
 }
-
- 
-
 
 void registerLazySingleton<T extends Object>(T object) {
   return locator.registerLazySingleton<T>(() => object);

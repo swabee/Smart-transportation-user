@@ -5,7 +5,7 @@ import 'package:user_app/constant/app_constant.dart';
 
 class LocationSearchCustomTextField extends StatefulWidget {
   final List<Map<String, dynamic>> depots;
-  final Function(String) onSelected;
+  final Function(int) onSelected;
   final String fieldName;
 
   const LocationSearchCustomTextField({
@@ -79,7 +79,7 @@ class _LocationSearchCustomTextFieldState
                   title: Text(depot['name']),
                   onTap: () {
                     _controller.text = depot['name'];
-                    widget.onSelected(depot['name']);
+                    widget.onSelected(depot['id']);
                     setState(() {
                       _showSuggestions =
                           false;

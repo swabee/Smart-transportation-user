@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "205382328500",
+    "project_id": "ezygo-student",
+    "storage_bucket": "ezygo-student.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205382328500:android:fdaa4553c5616c28a8b7e1",
+        "android_client_info": {
+          "package_name": "com.example.bus_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdFPaoHFKiy6nyvWThYJqLqf5eflNPhSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205382328500:android:988e1b5c5b66b6cba8b7e1",
+        "android_client_info": {
+          "package_name": "com.example.user_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdFPaoHFKiy6nyvWThYJqLqf5eflNPhSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,6 +8,7 @@ import 'package:user_app/custom/button_custom.dart';
 import 'package:user_app/custom/container_custom.dart';
 import 'package:user_app/custom/text_custom.dart';
 import 'package:user_app/features/booking/data/cubit/all_booking_cubit.dart';
+import 'package:user_app/features/booking/data/models/booking_model.dart';
 import 'package:user_app/features/booking/presnetatioin/pages/booking_available_trips_page.dart';
 import 'package:user_app/features/customer_setting/customer_profile/presentation/bloc/user_data_bloc.dart';
 import 'package:user_app/features/home/presentation/search-for-booking-cubit/search_for_booking_cubit.dart';
@@ -34,6 +35,25 @@ class _HomeState extends State<Home> {
         title: BlocBuilder<UserDataBloc, UserDataState>(
           builder: (context, state) {
             if (state is UserDataLoaded) {
+              // Check wallet balance and show alert if needed
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (state.userDataEntity.walletBalance <= 30) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Low Balance"),
+                      content: const Text(
+                          "Your balance is less than 30. Please recharge."),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text("OK"),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              });
               return TextCustomWidget(
                 text: 'Hi ${state.userDataEntity.fName} !',
                 fontSize: 17.sp,
@@ -80,6 +100,7 @@ class _HomeState extends State<Home> {
                                   context
                                       .read<SearchForBookingCubit>()
                                       .updatePickup(selectedDepot);
+                                  print(selectedDepot);
                                 },
                               ),
                               ContainerCustom(
@@ -105,6 +126,7 @@ class _HomeState extends State<Home> {
                                   context
                                       .read<SearchForBookingCubit>()
                                       .updateDestination(selectedDepot);
+                                  print(selectedDepot);
                                 },
                               ),
                               const DatePickList(),
@@ -168,11 +190,15 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   SliverList.builder(
-                    itemCount: allOrdersState.bookings.length,
+                    itemCount:allOrdersState.bookings.length,
                     itemBuilder: (context, index) {
+                      if(index>1) return null;
                       return RecentTripsTile(
+                        isActive: allOrdersState.bookings[index].status ==
+                            BookingStatus.active,
                         bookingModel: allOrdersState.bookings[index],
                       );
+                  
                     },
                   )
                 ]),

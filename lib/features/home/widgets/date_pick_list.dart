@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +15,7 @@ class DatePickList extends StatelessWidget {
     // Generate a list of dates from today to the next one month
     final dates = List.generate(
       30,
-      (index) => DateTime.now().add(Duration(days: index)),
+      (index) => Timestamp.fromDate(DateTime.now().add(Duration(days: index))),
     );
 
     return BlocBuilder<SearchForBookingCubit, SearchForBookingState>(
@@ -28,14 +29,15 @@ class DatePickList extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: dates.length,
             itemBuilder: (context, index) {
-              final date = dates[index];
-              final isSelected =
-                  state.selectedDate != null && _isSameDate(state.selectedDate!, date);
+              final timestamp = dates[index]; // Now a Timestamp
+              final date = timestamp.toDate(); // Convert to DateTime for display
+              final isSelected = state.selectedDate != null &&
+                  _isSameDate(state.selectedDate!.toDate(), date);
 
               return GestureDetector(
                 onTap: () {
                   // Update the selected date in the cubit
-                  context.read<SearchForBookingCubit>().updateBookingDate(date);
+                  context.read<SearchForBookingCubit>().updateBookingDate(timestamp);
                 },
                 child: DatePickListTile(
                   day: _getDayName(date),
@@ -49,6 +51,7 @@ class DatePickList extends StatelessWidget {
       },
     );
   }
+}
 
   // Helper function to get day name (e.g., "Mon", "Tue")
   String _getDayName(DateTime date) {
@@ -62,8 +65,6 @@ class DatePickList extends StatelessWidget {
         date1.month == date2.month &&
         date1.day == date2.day;
   }
-}
-
 class DatePickListTile extends StatelessWidget {
   final String day;
   final String date;

@@ -61,6 +61,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             password: state.password.value,
           ),
         );
+      // await  getTokenAndSave();
         // emit(state.copyWith(status: FormzSubmissionStatus.success));
         result.fold((l) {
           emit(state.copyWith(
